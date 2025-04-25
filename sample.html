@@ -1,5 +1,5 @@
 <!--
-点情報から立方体を描く　失敗編！
+点情報から立方体を描く
 -->
 <canvas id="canvas1" width="300" height="300"></canvas>
 <script>
@@ -32,10 +32,13 @@
             let j = (i+1) % f.length;
             //面の頂点 V[i] と V[j] を結ぶ線を引く
             line(
-                V[f[i]][0], V[f[i]][1],
-                V[f[j]][0], V[f[j]][1]
+                calc( V[f[i]][0] ), calc( V[f[i]][1] ),
+                calc( V[f[j]][0] ), calc( V[f[j]][1] )
             );
         }
+    }
+    function calc(a){
+        return a * 70 + 150;
     }
 
     function fill() {
