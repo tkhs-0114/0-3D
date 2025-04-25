@@ -1,13 +1,41 @@
 <!--
-線を引くサンプルを関数化しよう。
+点情報と面情報を取り出そう
 -->
 <canvas id="canvas1" width="300" height="300"></canvas>
 <script>
     const can1 = document.getElementById("canvas1");
     const ctx1 = can1.getContext("2d");
 
+    // ↓↓↓↓↓↓ コピー推奨 ↓↓↓↓↓↓
+    V = [
+        [-1, -1, -1], // Vertex 0
+        [1, -1, -1],  // Vertex 1
+        [1, 1, -1],   // Vertex 2
+        [-1, 1, -1],  // Vertex 3
+        [-1, -1, 1],  // Vertex 4
+        [1, -1, 1],   // Vertex 5
+        [1, 1, 1],    // Vertex 6
+        [-1, 1, 1]    // Vertex 7
+    ];
+    F = [
+        [0, 1, 2, 3], // Front face
+        [4, 5, 6, 7], // Back face
+        [0, 1, 5, 4], // Bottom face
+        [2, 3, 7, 6], // Top face
+        [0, 3, 7, 4], // Left face
+        [1, 2, 6, 5]  // Right face
+    ];
+    // ↑↑↑↑↑↑ コピー推奨 ↑↑↑↑↑↑
+
     fill();
-    line(150, 50, 150, 250);
+    //面を一つづつ取り出す
+    for(f of F){
+        for(let i=0; i<f.length; i++){
+            let j = (i+1) % f.length;
+            //面の頂点 V[i] と V[j] を結ぶ線を引く
+            console.log(V[f[i]], V[f[j]]);
+        }
+    }
 
     function fill() {
         ctx1.rect(0,0,300,300);
