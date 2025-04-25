@@ -19,8 +19,8 @@
                 let j = (i+1) % f.length;
                 //面の頂点 V[i] と V[j] を結ぶ線を引く
                 line(
-                    calc( V[f[i]][0] ), -1 * calc( V[f[i]][1] ),
-                    calc( V[f[j]][0] ), -1 * calc( V[f[j]][1] )
+                    calc( V[f[i]][0] ),  calc( -1 * V[f[i]][1] ),
+                    calc( V[f[j]][0] ),  calc( -1 * V[f[j]][1] )
                 );
             }
         }
