@@ -6,37 +6,44 @@
     const can1 = document.getElementById("canvas1");
     const ctx1 = can1.getContext("2d");
 
-    V = [
-        [-1, -1, -1], // Vertex 0
-        [1, -1, -1],  // Vertex 1
-        [1, 1, -1],   // Vertex 2
-        [-1, 1, -1],  // Vertex 3
-        [-1, -1, 1],  // Vertex 4
-        [1, -1, 1],   // Vertex 5
-        [1, 1, 1],    // Vertex 6
-        [-1, 1, 1]    // Vertex 7
-    ];
-    F = [
-        [0, 1, 2, 3], // Front face
-        [4, 5, 6, 7], // Back face
-        [0, 1, 5, 4], // Bottom face
-        [2, 3, 7, 6], // Top face
-        [0, 3, 7, 4], // Left face
-        [1, 2, 6, 5]  // Right face
-    ];
+    const init = async() => {
+        V = [];
+        F = [];
 
-    fill();
-    //面を一つづつ取り出す
-    for(f of F){
-        for(let i=0; i<f.length; i++){
-            let j = (i+1) % f.length;
-            //面の頂点 V[i] と V[j] を結ぶ線を引く
-            line(
-                calc( V[f[i]][0] ), calc( V[f[i]][1] ),
-                calc( V[f[j]][0] ), calc( V[f[j]][1] )
-            );
+        await load("./monkey.obj");
+
+        fill();
+        //面を一つづつ取り出す
+        for(f of F){
+            for(let i=0; i<f.length; i++){
+                let j = (i+1) % f.length;
+                //面の頂点 V[i] と V[j] を結ぶ線を引く
+                line(
+                    calc( V[f[i]][0] ), calc( V[f[i]][1] ),
+                    calc( V[f[j]][0] ), calc( V[f[j]][1] )
+                );
+            }
+        }
+    };
+    init();
+
+    async function load(filePath) {
+        const response = await fetch(filePath);
+        const text = await response.text();
+        const lines = text.split("\n");
+
+        for (let line of lines) {
+            line = line.trim();
+            if (line.startsWith("v ")) {
+                const [, x, y, z] = line.split(/\s+/).map(Number);
+                V.push([x, y, z]);
+            } else if (line.startsWith("f ")) {
+                const [, ...indices] = line.split(/\s+/).map(i => parseInt(i) - 1);
+                F.push(indices);
+            }
         }
     }
+
     function calc(a){
         return a * 70 + 150;
     }
