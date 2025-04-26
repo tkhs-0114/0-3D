@@ -1,5 +1,5 @@
 <!--
-点情報から立方体を描く
+拡大縮小を行う
 -->
 <canvas id="canvas1" width="300" height="300"></canvas>
 <script>
@@ -18,9 +18,23 @@
             for(let i=0; i<f.length; i++){
                 let j = (i+1) % f.length;
                 //面の頂点 V[i] と V[j] を結ぶ線を引く
+                const vi_1 = V[f[i]];
+                const vj_1 = V[f[j]];
+                
+                let size = 1.5;
+
+                const vi_2 = [0, 0, 0];
+                vi_2[0] = vi_1[0] * size;
+                vi_2[1] = vi_1[1] * size;
+                vi_2[2] = vi_1[2] * size;
+                const vj_2 = [0, 0, 0];
+                vj_2[0] = vj_1[0] * size;
+                vj_2[1] = vj_1[1] * size;
+                vj_2[2] = vj_1[2] * size;
+
                 line(
-                    calc( V[f[i]][0] ),  calc( -1 * V[f[i]][1] ),
-                    calc( V[f[j]][0] ),  calc( -1 * V[f[j]][1] )
+                    calc( vi_2[0] ),  calc( -1 * vi_2[1] ),
+                    calc( vj_2[0] ),  calc( -1 * vj_2[1] )
                 );
             }
         }
