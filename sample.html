@@ -1,7 +1,9 @@
 <!--
-拡大縮小を行う
+行列で拡大縮小を行う
 -->
-<canvas id="canvas1" width="300" height="300"></canvas>
+<body>
+    <canvas id="canvas1" width="300" height="300"></canvas>
+</body>
 <script>
     const can1 = document.getElementById("canvas1");
     const ctx1 = can1.getContext("2d");
@@ -23,14 +25,16 @@
                 
                 let size = 1.5;
 
-                const vi_2 = [0, 0, 0];
-                vi_2[0] = vi_1[0] * size;
-                vi_2[1] = vi_1[1] * size;
-                vi_2[2] = vi_1[2] * size;
-                const vj_2 = [0, 0, 0];
-                vj_2[0] = vj_1[0] * size;
-                vj_2[1] = vj_1[1] * size;
-                vj_2[2] = vj_1[2] * size;
+                const vi_2 = mult3x1([
+                    [size, 0, 0],
+                    [0, size, 0],
+                    [0, 0, size]
+                ], vi_1);
+                const vj_2 = mult3x1([
+                    [size, 0, 0],
+                    [0, size, 0],
+                    [0, 0, size]
+                ], vj_1);
 
                 line(
                     calc( vi_2[0] ),  calc( -1 * vi_2[1] ),
@@ -41,6 +45,15 @@
     };
     init();
 
+    function mult3x1(A, v){
+        const Av = [
+            [A[0][0] * v[0][0] + A[1][0] * v[1][0] + A[2][0] * v[2][0]],
+            [A[0][1] * v[0][0] + A[1][1] * v[1][0] + A[2][1] * v[2][0]],
+            [A[0][2] * v[0][0] + A[1][2] * v[1][0] + A[2][2] * v[2][0]]
+        ];
+        return Av;
+    }
+
     async function load(filePath) {
         const response = await fetch(filePath);
         const text = await response.text();
@@ -50,7 +63,11 @@
             line = line.trim();
             if (line.startsWith("v ")) {
                 const [, x, y, z] = line.split(/\s+/).map(Number);
-                V.push([x, y, z]);
+                V.push([
+                    [x],
+                    [y],
+                    [z]
+                ]);
             } else if (line.startsWith("f ")) {
                 const [, ...indices] = line.split(/\s+/).map(i => parseInt(i) - 1);
                 F.push(indices);
